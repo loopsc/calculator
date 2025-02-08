@@ -27,6 +27,14 @@ function operate(op,numOne,numTwo){
     }
 }
 
+const display = document.querySelector('#display')
+
+const numbers = document.querySelectorAll('.number').forEach(number => {
+    number.addEventListener('click',() => {
+        display.textContent = number.textContent
+    })
+})
+
 let a = 0
 let b = 0
 let op = '+'
