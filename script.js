@@ -17,13 +17,13 @@ function div(a, b) {
 function operate(op, numOne, numTwo) {
     switch (op) {
         case "+":
-            console.log(add(numOne, numTwo));
+            return add(numOne, numTwo);
         case "-":
-            console.log(sub(numOne, numTwo));
+            return sub(numOne, numTwo);
         case "*":
-            console.log(mul(numOne, numTwo));
+            return mul(numOne, numTwo);
         case "/":
-            console.log(div(numOne, numTwo));
+            return div(numOne, numTwo);
     }
 }
 
@@ -34,28 +34,37 @@ let operator = "";
 
 const numberNodes = document.querySelectorAll(".number").forEach((number) => {
     number.addEventListener("click", () => {
-        numOne += number.textContent;
-        numOne = +numOne;
-        console.log(typeof numOne, numOne);
+        if (operator == "") {
+            numOne += number.textContent;
+            console.log("numOne", typeof numOne, numOne);
 
-        display.textContent = numOne;
+            display.textContent = numOne;
+        } else {
+            numTwo += number.textContent;
+            console.log("numTwo", typeof numTwo, numTwo);
+
+            display.textContent = numTwo;
+        }
     });
 });
 
 const operatorNodes = document.querySelectorAll(".operator").forEach((op) => {
     op.addEventListener("click", () => {
-        if (op.textContent != "=") {
+        if (op.textContent != "=" && op.textContent != 'C') {
             operator = op.textContent;
-            console.log(typeof operator, operator);
+            console.log("operator", typeof operator, operator);
 
-            display.textContent = op.textContent;
+            display.textContent = operator;
+        } else if(op.textContent == '=') {
+            // perform operation
+            console.log(`${numOne} ${operator} ${numTwo}`);
+            display.textContent = operate(operator, +numOne, +numTwo);
         }
-
-        // perform operation
-        console.log("= clicked");
+        else {
+            numOne = ''
+            numTwo = ''
+            operator = ''
+            display.textContent = 0
+        }
     });
 });
-
-let a = 0;
-let b = 0;
-let op = "+";
