@@ -1,4 +1,5 @@
 const display = document.querySelector("#display");
+const decimalButton = document.getElementById("decimal");
 let numOne = "";
 let numTwo = "";
 let operator = "";
@@ -48,12 +49,19 @@ function clear(clearDisplay = false) {
 
 const numberNodes = document.querySelectorAll(".number").forEach((number) => {
     number.addEventListener("click", () => {
+        // If numOne
         if (operator == "") {
             if (numOne.length < 9) {
+                
                 numOne += number.textContent;
                 console.log("numOne", typeof numOne, numOne);
 
                 display.textContent = numOne;
+                if(number.textContent == '.'){
+                    if (numOne.includes(".")) {
+                        decimalButton.setAttribute("disabled", "disabled");
+                    }
+                }
             }
         } else {
             if (numOne == "") {
@@ -64,6 +72,11 @@ const numberNodes = document.querySelectorAll(".number").forEach((number) => {
                 console.log("numTwo", typeof numTwo, numTwo);
 
                 display.textContent = numTwo;
+                if(number.textContent == '.'){
+                    if (numTwo.includes(".")) {
+                        decimalButton.setAttribute("disabled", "disabled");
+                    }
+                }
             }
         }
     });
@@ -71,16 +84,17 @@ const numberNodes = document.querySelectorAll(".number").forEach((number) => {
 
 const operatorNodes = document.querySelectorAll(".operator").forEach((op) => {
     op.addEventListener("click", () => {
+        decimalButton.removeAttribute("disabled");
+
         // If the user clicks any of the mathematical operators
         if (op.textContent != "=" && op.textContent != "C") {
-            if (numTwo == '') {
+            if (numTwo == "") {
                 operator = op.textContent;
                 console.log("numOfCalculations: " + numOfCalculations);
 
                 // If this is the first operation
                 // Save the operator and show on the display
                 if (numOfCalculations == 1) {
-                    
                     console.log("operator", typeof operator, operator);
                     display.textContent = operator;
                     // Chain operations
