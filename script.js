@@ -1,17 +1,17 @@
 function add(a, b) {
-    return a + b;
+    return (a + b).toFixed(2);
 }
 
 function sub(a, b) {
-    return a - b;
+    return (a - b).toFixed(2);
 }
 
 function mul(a, b) {
-    return a * b;
+    return (a * b).toFixed(2);
 }
 
 function div(a, b) {
-    return a / b;
+    return (a / b).toFixed(2);
 }
 
 function operate(op, numOne, numTwo) {
@@ -32,6 +32,7 @@ let numOne = "";
 let numTwo = "";
 let operator = "";
 
+
 const numberNodes = document.querySelectorAll(".number").forEach((number) => {
     number.addEventListener("click", () => {
         if (operator == "") {
@@ -50,21 +51,24 @@ const numberNodes = document.querySelectorAll(".number").forEach((number) => {
 
 const operatorNodes = document.querySelectorAll(".operator").forEach((op) => {
     op.addEventListener("click", () => {
-        if (op.textContent != "=" && op.textContent != 'C') {
+        if (op.textContent != "=" && op.textContent != "C") {
             operator = op.textContent;
             console.log("operator", typeof operator, operator);
 
             display.textContent = operator;
-        } else if(op.textContent == '=') {
-            // perform operation
-            console.log(`${numOne} ${operator} ${numTwo}`);
-            display.textContent = operate(operator, +numOne, +numTwo);
-        }
-        else {
-            numOne = ''
-            numTwo = ''
-            operator = ''
-            display.textContent = 0
+        } else if (op.textContent == "=") {
+            if (operator == "" || numTwo == "") {
+                display.textContent = numOne;
+            } else {
+                // perform operation
+                console.log(`${numOne} ${operator} ${numTwo}`);
+                display.textContent = operate(operator, +numOne, +numTwo);
+            }
+        } else {
+            numOne = "";
+            numTwo = "";
+            operator = "";
+            display.textContent = 0;
         }
     });
 });
