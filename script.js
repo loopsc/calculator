@@ -36,18 +36,16 @@ function operate(op, numOne, numTwo) {
     }
 }
 
-function clear(clearDisplay = true){
+function clear(clearDisplay = false){
     numOne = "";
     numTwo = "";
     operator = "";
     numOfCalculations = 0
     if (clearDisplay){
-        display.textContent = 0;
+        display.textContent = '0';
     }
     
 }
-
-
 
 const numberNodes = document.querySelectorAll(".number").forEach((number) => {
     number.addEventListener("click", () => {
@@ -66,7 +64,7 @@ const numberNodes = document.querySelectorAll(".number").forEach((number) => {
                 numTwo += number.textContent;
                 console.log("numTwo", typeof numTwo, numTwo);
 
-                display.textContent = numOne + operator + numTwo;
+                display.textContent = numTwo;
             }
         }
     });
@@ -76,22 +74,16 @@ const operatorNodes = document.querySelectorAll(".operator").forEach((op) => {
     op.addEventListener("click", () => {
         // If the user clicks any of the mathematical operators
         if (op.textContent != "=" && op.textContent != "C") {
-
-            if(operator != ''){
-                operator = op.textContent
-            }
-            else{
-                numOfCalculations += 1;
-            }
             
-            
+            numOfCalculations += 1;
             console.log('numOfCalculations: ' + numOfCalculations)
+
             // If this is the first operation
             // Save the operator and show on the display
             if (numOfCalculations == 1) {
                 operator = op.textContent;
                 console.log("operator", typeof operator, operator);
-                display.textContent = numOne + operator;
+                display.textContent = operator;
             // Chain operations
             // Not first operator so calculate first 2 numbers first
             } else {
@@ -99,7 +91,6 @@ const operatorNodes = document.querySelectorAll(".operator").forEach((op) => {
                 operator = op.textContent;
                 display.textContent = numOne + operator;
                 numTwo = "";
-                
             }
 
             // If the user clicks '='
@@ -107,22 +98,29 @@ const operatorNodes = document.querySelectorAll(".operator").forEach((op) => {
             // Defaults the first number to 0 if nothing is selected
             if (numOne == "") {
                 numOne = '0'
-                display.textContent = numOne;
+                display.textContent = '0';
                 clear(clearDisplay = false)
             
-            // If numOne is selected but not numTwo or operator
+            // If numOne is selected but not operator or numTwo
             } else if (operator == "" || numTwo == "") {
                 display.textContent = numOne;
                 numTwo = ''
                 
-            } else {
+            }
+            else {
                 // No issues. Perform operation
                 console.log(`${numOne} ${operator} ${numTwo}`);
-                display.textContent = operate(operator, +numOne, +numTwo);
+                result = operate(operator, +numOne, +numTwo);
+                display.textContent = result;
+
+                numOne = result;
+                numTwo = ''
+                operator = ''
+                numOfCalculations = 0
             }
             // If the user clicks 'C'
         } else {
-            clear()
+            clear(clearDisplay=true)
         }
     });
 });
