@@ -2,7 +2,7 @@ const display = document.querySelector("#display");
 let numOne = "";
 let numTwo = "";
 let operator = "";
-let numOfCalculations = 0;
+let numOfCalculations = 1;
 
 function add(a, b) {
     return a + b;
@@ -36,15 +36,14 @@ function operate(op, numOne, numTwo) {
     }
 }
 
-function clear(clearDisplay = false){
+function clear(clearDisplay = false) {
     numOne = "";
     numTwo = "";
     operator = "";
-    numOfCalculations = 0
-    if (clearDisplay){
-        display.textContent = '0';
+    numOfCalculations = 0;
+    if (clearDisplay) {
+        display.textContent = "0";
     }
-    
 }
 
 const numberNodes = document.querySelectorAll(".number").forEach((number) => {
@@ -74,53 +73,54 @@ const operatorNodes = document.querySelectorAll(".operator").forEach((op) => {
     op.addEventListener("click", () => {
         // If the user clicks any of the mathematical operators
         if (op.textContent != "=" && op.textContent != "C") {
-            
-            numOfCalculations += 1;
-            console.log('numOfCalculations: ' + numOfCalculations)
+            if (numTwo == '') {
+                operator = op.textContent;
+                console.log("numOfCalculations: " + numOfCalculations);
 
-            // If this is the first operation
-            // Save the operator and show on the display
-            if (numOfCalculations == 1) {
-                operator = op.textContent;
-                console.log("operator", typeof operator, operator);
-                display.textContent = operator;
-            // Chain operations
-            // Not first operator so calculate first 2 numbers first
-            } else {
-                numOne = operate(operator, +numOne, +numTwo);
-                operator = op.textContent;
-                display.textContent = numOne + operator;
-                numTwo = "";
+                // If this is the first operation
+                // Save the operator and show on the display
+                if (numOfCalculations == 1) {
+                    
+                    console.log("operator", typeof operator, operator);
+                    display.textContent = operator;
+                    // Chain operations
+                    // Not first operator so calculate first 2 numbers first
+                } else {
+                    numOne = operate(operator, +numOne, +numTwo);
+                    operator = op.textContent;
+                    display.textContent = operator;
+                    numTwo = "";
+
+                    numOfCalculations += 1;
+                }
             }
 
             // If the user clicks '='
         } else if (op.textContent == "=") {
             // Defaults the first number to 0 if nothing is selected
             if (numOne == "") {
-                numOne = '0'
-                display.textContent = '0';
-                clear(clearDisplay = false)
-            
-            // If numOne is selected but not operator or numTwo
+                numOne = "0";
+                display.textContent = "0";
+                clear((clearDisplay = false));
+
+                // If numOne is selected but not operator or numTwo
             } else if (operator == "" || numTwo == "") {
                 display.textContent = numOne;
-                numTwo = ''
-                
-            }
-            else {
+                numTwo = "";
+            } else {
                 // No issues. Perform operation
                 console.log(`${numOne} ${operator} ${numTwo}`);
                 result = operate(operator, +numOne, +numTwo);
                 display.textContent = result;
 
                 numOne = result;
-                numTwo = ''
-                operator = ''
-                numOfCalculations = 0
+                numTwo = "";
+                operator = "";
+                numOfCalculations = 0;
             }
             // If the user clicks 'C'
         } else {
-            clear(clearDisplay=true)
+            clear((clearDisplay = true));
         }
     });
 });
