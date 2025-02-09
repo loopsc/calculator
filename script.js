@@ -53,7 +53,7 @@ const numberNodes = document.querySelectorAll(".number").forEach((number) => {
                 numTwo += number.textContent;
                 console.log("numTwo", typeof numTwo, numTwo);
 
-                display.textContent = numTwo;
+                display.textContent = numOne + operator + numTwo;
             }
         }
     });
@@ -65,23 +65,26 @@ const operatorNodes = document.querySelectorAll(".operator").forEach((op) => {
         if (op.textContent != "=" && op.textContent != "C") {
             numOfCalculations += 1;
             // If this is the first operation
-            // Save the operator and display on the display
+            // Save the operator and show on the display
             if (numOfCalculations == 1) {
                 operator = op.textContent;
                 console.log("operator", typeof operator, operator);
-                display.textContent = operator;
+                display.textContent = numOne + operator;
+            // Not first operator so calculate first 2 numbers first
             } else {
                 numOne = operate(operator, +numOne, +numTwo);
-                display.textContent = numOne;
-                numTwo = "";
                 operator = op.textContent;
+                display.textContent = numOne + operator;
+                numTwo = "";
+                
             }
 
             // If the user clicks '='
         } else if (op.textContent == "=") {
             // Defaults the first number to 0 if nothing is selected
             if (numOne == "") {
-                display.textContent = "0";
+                numOne = '0'
+                display.textContent = numOne;
                 // Defaults the number to numOne if no operator or numTwo is selected
             } else if (operator == "" || numTwo == "") {
                 display.textContent = numOne;
@@ -95,6 +98,7 @@ const operatorNodes = document.querySelectorAll(".operator").forEach((op) => {
             numOne = "";
             numTwo = "";
             operator = "";
+            numOfCalculations = 0
             display.textContent = 0;
         }
     });
