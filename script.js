@@ -41,7 +41,7 @@ function clear(clearDisplay = false) {
     numOne = "";
     numTwo = "";
     operator = "";
-    numOfCalculations = 0;
+    numOfCalculations = 1;
     if (clearDisplay) {
         display.textContent = "0";
     }
@@ -49,15 +49,14 @@ function clear(clearDisplay = false) {
 
 const numberNodes = document.querySelectorAll(".number").forEach((number) => {
     number.addEventListener("click", () => {
-        // If numOne
+        // No operator chosen yet, therefore still selecting numOne
         if (operator == "") {
             if (numOne.length < 9) {
-                
                 numOne += number.textContent;
                 console.log("numOne", typeof numOne, numOne);
 
                 display.textContent = numOne;
-                if(number.textContent == '.'){
+                if (number.textContent == ".") {
                     if (numOne.includes(".")) {
                         decimalButton.setAttribute("disabled", "disabled");
                     }
@@ -66,13 +65,15 @@ const numberNodes = document.querySelectorAll(".number").forEach((number) => {
         } else {
             if (numOne == "") {
                 numOne = "0";
+                console.log('numOne set to 0')
             }
             if (numTwo.length < 9) {
                 numTwo += number.textContent;
                 console.log("numTwo", typeof numTwo, numTwo);
+                console.log('numOne: ' + numOne)
 
                 display.textContent = numTwo;
-                if(number.textContent == '.'){
+                if (number.textContent == ".") {
                     if (numTwo.includes(".")) {
                         decimalButton.setAttribute("disabled", "disabled");
                     }
@@ -91,14 +92,17 @@ const operatorNodes = document.querySelectorAll(".operator").forEach((op) => {
             if (numTwo == "") {
                 operator = op.textContent;
                 console.log("numOfCalculations: " + numOfCalculations);
+                console.log('numOne: ' + numOne)
 
                 // If this is the first operation
                 // Save the operator and show on the display
                 if (numOfCalculations == 1) {
                     console.log("operator", typeof operator, operator);
                     display.textContent = operator;
-                    // Chain operations
-                    // Not first operator so calculate first 2 numbers first
+
+                    numOfCalculations += 1
+                // Chain operations
+                // Not first operator so calculate first 2 numbers first
                 } else {
                     numOne = operate(operator, +numOne, +numTwo);
                     operator = op.textContent;
