@@ -5,16 +5,26 @@ let numTwo = "";
 let operator = "";
 let numOfCalculations = 1;
 
+const mathOperators = ['+','-','*','/']
+
 function add(a, b) {
-    return a + b;
+    let result = a + b;
+    if (result.lengh > 3){
+        return Math.round(result * 100) / 100;
+    }
+    return result
 }
 
 function sub(a, b) {
-    return a - b;
+    let result = a - b;
+    if (result.lengh > 3){
+        return Math.round(result * 100) / 100;
+    }
+    return result
 }
 
 function mul(a, b) {
-    return Math.round(a * b * 100) / 100;
+    return Math.round((a * b) * 100) / 100;
 }
 
 function div(a, b) {
@@ -65,12 +75,12 @@ const numberNodes = document.querySelectorAll(".number").forEach((number) => {
         } else {
             if (numOne == "") {
                 numOne = "0";
-                console.log('numOne set to 0')
+                console.log("numOne set to 0");
             }
             if (numTwo.length < 9) {
                 numTwo += number.textContent;
                 console.log("numTwo", typeof numTwo, numTwo);
-                console.log('numOne: ' + numOne)
+                console.log("numOne: " + numOne);
 
                 display.textContent = numTwo;
                 if (number.textContent == ".") {
@@ -88,11 +98,12 @@ const operatorNodes = document.querySelectorAll(".operator").forEach((op) => {
         decimalButton.removeAttribute("disabled");
 
         // If the user clicks any of the mathematical operators
-        if (op.textContent != "=" && op.textContent != "C") {
+        // op.textContent != "=" && op.textContent != "C" && op.textContent != 'DEL'
+        if (mathOperators.includes(op.textContent)) {
             if (numTwo == "") {
                 operator = op.textContent;
                 console.log("numOfCalculations: " + numOfCalculations);
-                console.log('numOne: ' + numOne)
+                console.log("numOne: " + numOne);
 
                 // If this is the first operation
                 // Save the operator and show on the display
@@ -100,9 +111,9 @@ const operatorNodes = document.querySelectorAll(".operator").forEach((op) => {
                     console.log("operator", typeof operator, operator);
                     display.textContent = operator;
 
-                    numOfCalculations += 1
-                // Chain operations
-                // Not first operator so calculate first 2 numbers first
+                    numOfCalculations += 1;
+                    // Chain operations
+                    // Not first operator so calculate first 2 numbers first
                 } else {
                     numOne = operate(operator, +numOne, +numTwo);
                     operator = op.textContent;
@@ -137,8 +148,23 @@ const operatorNodes = document.querySelectorAll(".operator").forEach((op) => {
                 numOfCalculations = 0;
             }
             // If the user clicks 'C'
-        } else {
+        } else if (op.textContent == "C") {
             clear((clearDisplay = true));
+            // If the user clicks 'DEL
+        } else {
+            if (operator == ''){
+                
+                console.log('DEL clicked')
+                // Convert to string first
+                numOne = numOne.toString().slice(0,-1)
+                display.textContent = numOne
+                console.log("numOne", typeof numOne, numOne);
+            } 
+            else{
+                numTwo = numTwo.toString().slice(0,-1)
+                display.textContent = numTwo
+                console.log('numTwo', typeof numTwo, numTwo)
+            }
         }
     });
 });

@@ -74,5 +74,9 @@ button {
 }
 
 #clear {
-    flex: 1 1 75%;
+    flex: 1 1 50%;
+}
+
+#delete {
+    font-size: 30px;
 }
